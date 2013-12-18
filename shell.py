@@ -6,7 +6,6 @@
 # For redistribution and use terms, see the LICENSE file.
 #
 
-import numpy as np
 import matplotlib.pyplot as plt
 import fitbit
 import datetime

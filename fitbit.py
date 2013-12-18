@@ -83,7 +83,7 @@ class Fitbit:
 
         stepsData = []
 
-        dom = parseString(xml.strip())
+        dom = parseString(xml)
         dataPoints = dom.getElementsByTagName('data')[0] \
             .getElementsByTagName('graph')[0]            \
             .getElementsByTagName('value')
@@ -108,14 +108,32 @@ class Fitbit:
             GRAPH_URL,
             "?type=intradaySleep",
             "&period=1m",
-            "&dateTo=%s" (date.strftime('%Y-%m-%d'),),
+            "&dateTo=%s" % (date.strftime('%Y-%m-%d'),),
         ]
 
         url = ''.join(urlParts)
 
-        xml = self.fetchFromFitbit(url)
+        xml = self.fetchFromFitbit(url).read().strip() # The strip() is
+                                                       # NECESSARY!!
 
-        return xml
+        return self.__sleepXMLToPython(xml, date)
+
+    def __sleepXMLToPython(self, xml, date):
+        sleepData = []
+
+        bedtime = self.getTimeToBed(date)
+
+        dom = parseString(xml)
+        dataPoints = dom.getElementsByTagName('set')
+        for point in dataPoints:
+            sleepData.append({
+                'start': bedtime.strftime('%H:%M'),
+                'end': (datetime.datetime.combine(datetime.date.today(), bedtime) + datetime.timedelta(minutes=1)).strftime('%H:%M'),
+                'state': point.attributes['value'].value,
+            })
+            bedtime = (datetime.datetime.combine(datetime.date.today(), bedtime) + datetime.timedelta(minutes=1)).time()
+
+        return sleepData
 
     def getTimeToBed(self, date):
         urlParts = [

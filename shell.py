@@ -54,6 +54,39 @@ def plotSteps():
     ax.bar(range(0, len(stepsCount)), stepsCount, width)
     plt.show()
 
+def sleep(pa):
+    if pa[1] == "plot":
+        plotSleep()
+        return
+    if pa[1] == "save":
+        writeSleep(pa[2])
+        return
+    if pa[1] == "view":
+        viewSleep()
+        return
+
+def writeSleep(filename):
+    global d
+    sleep = f.getSleepForDay(d)
+    with open(filename, 'w') as out:
+        out.write("Start,End,State\n")
+        for ivl in sleep:
+            out.write(ivl['start'] + "," + ivl['end'] + "," + ivl['state']
+                + "\n")
+
+def viewSleep():
+    writeSleep("/tmp/pybit.csv")
+    call(["less", "/tmp/pybit.csv"])
+
+def plotSleep():
+    global d
+    sleep = f.getSleepForDay(d)
+    sleepState = [int(x['state'].split('.')[0]) for x in sleep]
+    width = 0.1      # the width of the bars
+    fig, ax = plt.subplots()
+    ax.bar(range(0, len(sleepState)), sleepState, width)
+    plt.show()
+
 def setDate(pa):
     global d
     try:
@@ -78,6 +111,7 @@ def empty(pa):
 
 cmds = {
         'steps': steps,
+        'sleep': sleep,
         'date': setDate,
         'today': today,
         'yesterday': yesterday,

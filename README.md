@@ -15,6 +15,12 @@ that if the FitBit website changes, this software will break. This software is
 not using the documented API as it does not provide the intraday data, only
 daily totals.
 
+Pre-requisites
+--------------
+
+ * Python 3.2+
+ * matplotlib
+
 Usage
 -----
 

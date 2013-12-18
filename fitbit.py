@@ -10,10 +10,12 @@ import http.cookiejar
 import urllib.request as urllib2
 from urllib.parse import urlencode
 from xml.dom.minidom import parseString
+import datetime
 import re
 
 AUTH_URL = 'https://www.fitbit.com/login'
 GRAPH_URL = 'http://www.fitbit.com/graph/getGraphData'
+SLEEP_URL = 'http://www.fitbit.com/sleep/'
 
 class Fitbit:
 
@@ -114,6 +116,21 @@ class Fitbit:
         xml = self.fetchFromFitbit(url)
 
         return xml
+
+    def getTimeToBed(self, date):
+        urlParts = [
+            SLEEP_URL,
+            date.strftime('%Y/%m/%d'),
+        ]
+
+        url = ''.join(urlParts)
+
+        html = self.fetchFromFitbit(url).readlines()
+
+        for ln in range(0, len(html)):
+            if str(html[ln]).find("You went to bed at") != -1:
+                return datetime.datetime.strptime(str(html[ln+4], 'utf-8').
+                    strip(), '%H:%M').time()
 
     def __getTextFromNode(self, nodelist):
         rc = []

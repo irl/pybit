@@ -69,6 +69,10 @@ def yesterday(pa):
     global d
     d = datetime.date.today() - datetime.timedelta(1)
 
+def bedtime(pa):
+    global d
+    print(f.getTimeToBed(d))
+
 def empty(pa):
     pass
 
@@ -77,6 +81,7 @@ cmds = {
         'date': setDate,
         'today': today,
         'yesterday': yesterday,
+        'bedtime': bedtime,
         '': empty,
     }
 

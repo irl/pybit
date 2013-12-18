@@ -45,6 +45,8 @@ commands are available:
  * steps plot - Uses matplotlib to draw a plot of the current date's steps
  * steps view - Displays the raw data in CSV format using the `less` pager
  * steps write *filename* - Writes the CSV data to the file of your choice
+ * bedtime - Display the time at which you went to bed the night prior to the
+   current date.
  * today - Sets the current date to today
  * yesterday - Sets the current date to yesterday
  * date *YYYY-MM-DD* - Sets the current date to an arbitrary date

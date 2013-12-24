@@ -1,0 +1,126 @@
+<!--
+
+pybit
+
+Copyright (c) 2013, Iain R. Learmonth <irl@sdf.org>
+All rights reserved.
+
+For redistribution and use terms, see the LICENSE file.
+
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>PyBitWeb</title>
+<link rel="stylesheet" href="style.css" />
+<script type="text/javascript" src="js/paper-full.min.js"></script>
+</head>
+<body>
+<h1>PyBitWeb</h1>
+<h2>Summary for {{ date }}</h2>
+<canvas id="mycanvas" width="1542" height="600" style="border:1px solid lightgrey;">
+Your browser doesn't support the HTML 5 canvas element.
+</canvas>
+<h3>Legend</h3>
+<ul>
+<li><span style="color: purple;">Steps in 5-minute intervals</span></li>
+<li><span style="color: red">Awake</span></li>
+<li><span style="color: yellow">Restless</span></li>
+<li><span style="color: green">Asleep</span></li>
+</ul>
+<script type="text/paperscript" canvas="mycanvas">
+
+    var width = 1542;
+    var height = 600;
+
+    // Plot frame
+
+    var plotFrame = new Path({
+        'segments': [[50, 50], [width - 50, 50], [width - 50, height - 50],
+                        [50, height - 50], [50, 50]],
+    });
+
+    plotFrame.strokeColor = '#000000';
+
+    // Sleep colours
+
+    {% for row in sleepPlot %}
+
+    var sleepLine{{ row[0] }} = new Path({
+        'segments': [[51 + {{ row[0] }}, 51], [51 + {{ row[0] }}, height - 51]]
+    })
+
+    {% if row[1] == 1 %}
+        sleepLine{{ row[0] }}.strokeColor = '#00ff00';
+    {% elif row[1] == 2 %}
+        sleepLine{{ row[0] }}.strokeColor = '#ffff00';
+    {% else %}
+        sleepLine{{ row[0] }}.strokeColor = '#ff0000';
+    {% endif %}
+
+    {% endfor %}
+
+    // Steps bars
+
+    {% for row in stepsPlot %}
+
+    var stepsBar{{ row[0] }} = new Path({
+        'segments': [[51 + {{ row[0] }}, height - 51], [51 + {{ row[0] }}, height - 50 - {{ row[1] }}],
+            [55 + {{ row[0] }}, height - 50 - {{ row[1] }}], [55 + {{ row[0] }}, height - 51]]
+    })
+
+    stepsBar{{ row[0] }}.strokeColor = '#ff00ff'
+    stepsBar{{ row[0] }}.fillColor = '#ff00ff'
+
+    {% endfor %}
+
+    // X-Axis Ticks
+
+    var i;
+
+    for ( i = 0 ; i < 24 ; ++i ) {
+
+        var tickMark = new Path({
+            'segments': [[51 + (i * 60), height - 50], [51 + (i * 60), height - 40]]
+        })
+
+        tickMark.strokeColor = '#000000'
+
+        var tickText = new PointText(51 + (i * 60), height - 20);
+        tickText.content = i.toString() + ':00';
+        tickText.style = {
+            fontFamily: 'Courier New',
+            fontWeight: 'bold',
+            fontSize: 12,
+            fillColor: 'black',
+            justification: 'center'
+        };
+
+    }
+
+    // Y-Axis Ticks
+
+    for ( i = 0 ; i < 500 ; i += 50 ) {
+
+        var tickMark = new Path({
+            'segments': [[50, height - 51 - i], [40, height - 51 - i]]
+        })
+
+        tickMark.strokeColor = '#000000'
+
+        var tickText = new PointText(20, height - 46 - i);
+        tickText.content = i.toString();
+        tickText.style = {
+            fontFamily: 'Courier New',
+            fontWeight: 'bold',
+            fontSize: 12,
+            fillColor: 'black',
+            justification: 'center'
+        };
+
+    }
+
+</script>
+</body>
+</html>

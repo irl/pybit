@@ -153,8 +153,18 @@ class Fitbit:
 
         for ln in range(0, len(html)):
             if str(html[ln]).find("You went to bed at") != -1:
-                return datetime.datetime.strptime(str(html[ln+4], 'utf-8').
+                bedtime = datetime.datetime.strptime(str(html[ln+4], 'utf-8').
                     strip(), '%H:%M').time()
+                break
+
+        firstHour = bedtime.hour
+        lastHour = (datetime.datetime.combine(datetime.date.today(), bedtime)
+                        + self.getTimeInBed(date)).hour
+
+        if firstHour > lastHour:
+            date -= datetime.timedelta(days=1)
+
+        return datetime.datetime.combine(date, bedtime)
 
     def getTimeInBed(self, date):
         urlParts = [

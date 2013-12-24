@@ -38,8 +38,12 @@ def writeSteps(filename):
     with open(filename, 'w') as out:
         out.write("Start,End,Count\n")
         for ivl in steps:
-            out.write(ivl['start'] + "," + ivl['end'] + "," + ivl['steps']
-                + "\n")
+            rowParts = [
+                ivl['start'].strftime('%Y-%m-%dT%H:%M'),
+                ivl['end'].strftime('%Y-%m-%dT%H:%M'),
+                ivl['steps']
+            ]
+            out.write(','.join(rowParts) + "\n")
 
 def viewSteps():
     writeSteps("/tmp/pybit.csv")

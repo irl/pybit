@@ -73,9 +73,9 @@ class Fitbit:
 
         xml = self.fetchFromFitbit(url).read().strip() # The strip() is
                                                        # NECESSARY!!
-        return self.__stepsXMLToPython(xml)
+        return self.__stepsXMLToPython(xml, date)
 
-    def __stepsXMLToPython(self, xml):
+    def __stepsXMLToPython(self, xml, date):
         """
         This code is horrific just because the input XML is horrific. If
         Fitbit change their website, this will be the first thing to break.
@@ -91,9 +91,15 @@ class Fitbit:
             if point.attributes['xid'].value != '288':
                 times = re.findall(r'[1-2]?[0-9]:[0-9][0-9]',
                     point.attributes['description'].value)
+                if times[0] == '23:55':
+                    endDate = date + datetime.timedelta(days=1)
+                else:
+                    endDate = date
                 stepsData.append({
-                    'start': times[0],
-                    'end': times[1],
+                    'start': datetime.datetime.combine(date,
+                        datetime.datetime.strptime(times[0], '%H:%M').time()),
+                    'end': datetime.datetime.combine(endDate,
+                        datetime.datetime.strptime(times[1], '%H:%M').time()),
                     'steps': self.__getTextFromNode(point.childNodes)
                     })
 

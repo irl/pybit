@@ -178,8 +178,6 @@ class Fitbit:
 
         for ln in range(0, len(html)):
             if str(html[ln]).find("You were in bed for") != -1:
-                print(html[ln])
-                print(html[ln+1])
                 time = re.findall(r'[0-9]?[0-9]', str(html[ln+1], 'utf-8'))
                 return datetime.timedelta(
                     hours=int(time[0]),

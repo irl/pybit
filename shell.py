@@ -75,8 +75,12 @@ def writeSleep(filename):
     with open(filename, 'w') as out:
         out.write("Start,End,State\n")
         for ivl in sleep:
-            out.write(ivl['start'] + "," + ivl['end'] + "," + ivl['state']
-                + "\n")
+            rowParts = [
+                ivl['start'].strftime('%Y-%m-%dT%H:%M'),
+                ivl['end'].strftime('%Y-%m-%dT%H:%M'),
+                ivl['state']
+            ]
+            out.write(','.join(rowParts) + "\n")
 
 def viewSleep():
     writeSleep("/tmp/pybit.csv")

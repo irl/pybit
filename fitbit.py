@@ -133,11 +133,11 @@ class Fitbit:
         dataPoints = dom.getElementsByTagName('set')
         for point in dataPoints:
             sleepData.append({
-                'start': bedtime.strftime('%H:%M'),
-                'end': (datetime.datetime.combine(datetime.date.today(), bedtime) + datetime.timedelta(minutes=1)).strftime('%H:%M'),
+                'start': bedtime,
+                'end': bedtime + datetime.timedelta(minutes=1),
                 'state': point.attributes['value'].value,
             })
-            bedtime = (datetime.datetime.combine(datetime.date.today(), bedtime) + datetime.timedelta(minutes=1)).time()
+            bedtime = bedtime + datetime.timedelta(minutes=1)
 
         return sleepData
 

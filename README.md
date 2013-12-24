@@ -57,3 +57,20 @@ commands are available:
 
 Use Ctrl-D to exit.
 
+Importing to sqlite3
+--------------------
+
+The dbimport.py script contains functions for importing your fitbit data into an
+sqlite3 database with the schema described in schema.sql. To get started:
+
+    $ python
+    >>> import dbimport
+    >>> dbimport.initDb()
+
+This will create the sqlite3 database. To import your data, run:
+
+    $ python dbimport.py --email <email> --password <password>
+
+and todays and yesterdays data will be populated in the database. You can run
+the import command multiple times a day and the old data will be overwritten.
+

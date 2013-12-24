@@ -80,6 +80,8 @@ Using the web interface
 The web interface depends on Flask[1]. You must ensure that it is installed
 before attempting to run the web interface.
 
+[1]: http://flask.pocoo.org/
+
 You must also create the sqlite3 database and populate it as that is where the
 web interface takes its data from.
 

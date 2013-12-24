@@ -74,3 +74,18 @@ This will create the sqlite3 database. To import your data, run:
 and todays and yesterdays data will be populated in the database. You can run
 the import command multiple times a day and the old data will be overwritten.
 
+Using the web interface
+-----------------------
+
+The web interface depends on Flask[1]. You must ensure that it is installed
+before attempting to run the web interface.
+
+You must also create the sqlite3 database and populate it as that is where the
+web interface takes its data from.
+
+In the `web` subdirectory, run:
+
+    $ python pybit-web.py
+
+and then browse to http://localhost:5000/ in your web browser.
+

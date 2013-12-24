@@ -156,6 +156,26 @@ class Fitbit:
                 return datetime.datetime.strptime(str(html[ln+4], 'utf-8').
                     strip(), '%H:%M').time()
 
+    def getTimeInBed(self, date):
+        urlParts = [
+            SLEEP_URL,
+            date.strftime('%Y/%m/%d'),
+        ]
+
+        url = ''.join(urlParts)
+
+        html = self.fetchFromFitbit(url).readlines()
+
+        for ln in range(0, len(html)):
+            if str(html[ln]).find("You were in bed for") != -1:
+                print(html[ln])
+                print(html[ln+1])
+                time = re.findall(r'[0-9]?[0-9]', str(html[ln+1], 'utf-8'))
+                return datetime.timedelta(
+                    hours=int(time[0]),
+                    minutes=int(time[1])
+                )
+
     def __getTextFromNode(self, nodelist):
         rc = []
         for node in nodelist:

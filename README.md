@@ -19,7 +19,13 @@ Pre-requisites
 --------------
 
  * Python 3.2+
- * matplotlib
+ * For the shell:
+   * matplotlib
+   * GNU readline (with Python bindings)
+   * sqlite3 (with Python bindings)
+ * For the web interface:
+   * Flask
+   * sqlite3 (with Python bindings)
 
 Usage
 -----
@@ -77,12 +83,7 @@ the import command multiple times a day and the old data will be overwritten.
 Using the web interface
 -----------------------
 
-The web interface depends on [Flask][]. You must ensure that it is installed
-before attempting to run the web interface.
-
-[Flask]: http://flask.pocoo.org/
-
-You must also create the sqlite3 database and populate it as that is where the
+You must create the sqlite3 database and populate it as that is where the
 web interface takes its data from.
 
 In the `web` subdirectory, run:

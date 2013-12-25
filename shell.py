@@ -11,6 +11,7 @@ import fitbit
 import datetime
 from getpass import getpass
 from subprocess import call
+import readline
 
 username = input("Username: ")
 password = getpass("Password: ")

@@ -9,6 +9,7 @@
 import matplotlib.pyplot as plt
 import fitbit
 import datetime
+import math
 from getpass import getpass
 from subprocess import call
 import readline
@@ -115,6 +116,11 @@ def bedtime(pa):
     global d
     print(f.getTimeToBed(d))
 
+def timeInBed(pa):
+    global d
+    timeInBed = f.getTimeInBed(d)
+    print("PT" + str(math.floor(timeInBed.total_seconds() / 3600)) + "H" + str(math.floor(timeInBed.total_seconds() / 60) % 60) + "M")
+
 def empty(pa):
     pass
 
@@ -125,6 +131,7 @@ cmds = {
         'today': today,
         'yesterday': yesterday,
         'bedtime': bedtime,
+        'timeinbed': timeInBed,
         '': empty,
     }
 

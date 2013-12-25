@@ -24,10 +24,7 @@ def home():
 
 @app.route('/<year>/<month>/<day>')
 def summary(year, month, day):
-    print((year, month, day))
     date = datetime.date(int(year), int(month), int(day))
-    print(date)
-    print(datetime.date.today())
     db = sqlite3.connect(DB_PATH)
     cur = db.cursor()
     cur.execute("SELECT * FROM `fitbit_steps` WHERE datetime(`start`) >= datetime(?) AND datetime(`start`) < datetime(?)", (datetime.datetime.combine(date, datetime.time(0,0)).strftime('%Y-%m-%dT%H:%M'), ((datetime.datetime.combine(date, datetime.time(0,0)) + datetime.timedelta(days = 1)).strftime('%Y-%m-%dT%H:%M'))))
@@ -37,7 +34,6 @@ def summary(year, month, day):
         ts = datetime.datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
         pos = (ts.hour * 60) + ts.minute
         stepsPlot.append((pos, row[2]))
-    print(stepsPlot)
     cur.execute("SELECT * FROM `fitbit_sleep` WHERE datetime(`start`) >= datetime(?) AND datetime(`start`) < datetime(?)", (datetime.datetime.combine(date, datetime.time(0,0)).strftime('%Y-%m-%dT%H:%M'), ((datetime.datetime.combine(date, datetime.time(0,0)) + datetime.timedelta(days = 1)).strftime('%Y-%m-%dT%H:%M'))))
     result = cur.fetchall()
     sleepPlot = []

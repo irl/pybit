@@ -12,10 +12,30 @@ import datetime
 import math
 from getpass import getpass
 from subprocess import call
-import readline
+import argparse
+import sys
 
-username = input("Username: ")
-password = getpass("Password: ")
+parser = argparse.ArgumentParser(description='Scrape the FitBit website.')
+parser.add_argument('-b', action='store_true', help='Batch mode')
+parser.add_argument('--email', help='Your registered FitBit email address (required for batch mode)')
+parser.add_argument('--passwd', help='Your registered FitBit password (required for batch mode)')
+args = parser.parse_args()
+
+try:
+    if not args.b:
+        import readline
+except ImportError:
+    print("readline not available. Line editing functions will not be available.")
+
+if args.email != None or args.passwd != None:
+    username = args.email
+    password = args.passwd
+else:
+    if args.b:
+        print("Nope. Email address and password required.")
+        sys.exit(1)
+    username = input("E-Mail Address: ")
+    password = getpass("Password: ")
 
 # Get data from Fitbit
 f = fitbit.Fitbit(username, password)
@@ -137,7 +157,12 @@ cmds = {
 
 while True:
     try:
-        cmd = input(d.strftime('%Y-%m-%d> '))
+        if not args.b:
+            cmd = input(d.strftime('%Y-%m-%d> '))
+        else:
+            cmd = sys.stdin.readline().strip()
+            if not cmd:
+                break
     except EOFError:
         print()
         break

@@ -14,9 +14,25 @@ For redistribution and use terms, see the LICENSE file.
 <meta charset="utf-8" />
 <title>PyBitWeb</title>
 <script type="text/javascript" src="/js/paper-full.min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script>
+$(function() {
+$( "#datepicker" ).datepicker();
+});
+
+function changeDate() {
+    inp = $("#datepicker").val();
+    par = inp.split('/');
+    window.location = '/' + par[2] + '/' + par[0] + '/' + par[1]
+}
+</script>
 </head>
 <body>
 <h1>PyBitWeb</h1>
+<p>Date: <input type="text" id="datepicker"><input type="button" onclick="changeDate()" value="Go"></p>
 <h2>Summary for {{ date }}</h2>
 <canvas id="mycanvas" width="1542" height="600" style="border:1px solid lightgrey;">
 Your browser doesn't support the HTML 5 canvas element.
